@@ -71,9 +71,9 @@ export const testimonialsData = [
     text: `I've been using bg.removal for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.`,
   },
   {
-    image: profile_img_1,
-    name: "Donald Jackman",
-    role: " Graphic Designer",
+    image: sample_img_1,
+    name: "James Washington",
+    role: " Co-founder",
     stars: 5,
     text: `I've been using bg.removal for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.`,
   },
