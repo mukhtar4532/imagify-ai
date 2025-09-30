@@ -33,7 +33,7 @@ const Testimonials = () => {
               </div>
             </div>
 
-            <p className="text-gray-500 text-center text-sm mt-2 text-sm">
+            <p className="text-gray-500 text-center text-sm mt-2">
               {testimonial.text}
             </p>
           </div>
