@@ -17,7 +17,7 @@ import lock_icon from "./lock_icon.svg";
 import cross_icon from "./cross_icon.svg";
 import star_group from "./star_group.png";
 import credit_star from "./credit_star.svg";
-import profile_icon from "./profile_icon.png";
+import profile_icon from "./user_icon.svg";
 
 export const assets = {
   logo,
