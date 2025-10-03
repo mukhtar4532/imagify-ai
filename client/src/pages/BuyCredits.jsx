@@ -1,11 +1,18 @@
 import { useContext } from "react";
 import { assets, plans } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
+import { motion } from "motion/react";
 
 const BuyCredits = () => {
   const { user } = useContext(AppContext);
   return (
-    <section className="min-h-[80vh] text-center pt-14 mb-10">
+    <motion.section
+      initial={{ opacity: 0.2, y: 100 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1 }}
+      className="min-h-[80vh] text-center pt-14 mb-10"
+    >
       <button className="border border-gray-400 px-10 py-2 rounded-full mb-6">
         OUR PLANS
       </button>
@@ -15,7 +22,10 @@ const BuyCredits = () => {
 
       <div className="flex flex-wrap justify-center gap-6 text-left">
         {plans.map((item, index) => (
-          <div
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 + index * 0.2, duration: 0.6 }}
             key={index}
             className="bg-white drop-shadow-sm border rounded-lg px-8 py-12 text-gray-600 hover:scale-105 transition-all duration-500"
           >
@@ -29,10 +39,10 @@ const BuyCredits = () => {
             <button className="w-full bg-gray-800 text-white mt-8 text-sm rounded-md py-2.5 min-w-52">
               {user ? "Purchase" : "Get Started"}
             </button>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

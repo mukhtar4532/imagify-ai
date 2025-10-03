@@ -1,8 +1,15 @@
 import { assets, testimonialsData } from "../assets/assets";
+import { motion } from "motion/react";
 
 const Testimonials = () => {
   return (
-    <section className="flex flex-col justify-center items-center my-24 p-6 sm:px-28">
+    <motion.section
+      initial={{ opacity: 0.2, y: 100 }}
+      transition={{ duration: 1 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="flex flex-col justify-center items-center my-24 p-6 sm:px-28"
+    >
       <h1 className="text-3xl sm:text-4xl font-semibold mb-2">
         Customer testimonials
       </h1>
@@ -39,7 +46,7 @@ const Testimonials = () => {
           </div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

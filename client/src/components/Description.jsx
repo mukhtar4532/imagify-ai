@@ -1,8 +1,15 @@
 import { assets } from "../assets/assets";
+import { motion } from "motion/react";
 
 const Description = () => {
   return (
-    <section className="flex flex-col justify-center items-center my-24 p-6 md:px-28">
+    <motion.section
+      initial={{ opacity: 0.2, y: 100 }}
+      transition={{ duration: 1 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="flex flex-col justify-center items-center my-24 p-6 md:px-28"
+    >
       <h1 className="text-3xl sm:text-4xl font-semibold">Create AI Images</h1>
       <p className="text-gray-500 text-sm mt-2 mb-8">
         Turn your imagination into visuals
@@ -34,7 +41,7 @@ const Description = () => {
           </p>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

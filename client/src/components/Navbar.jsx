@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets.js";
 import { AppContext } from "../context/AppContext.jsx";
+import { motion } from "motion/react";
 
 const Navbar = () => {
   const { user, setShowLogin } = useContext(AppContext);
@@ -10,7 +11,14 @@ const Navbar = () => {
   return (
     <nav className="flex items-center justify-between py-4 sm:px-4 cursor-pointer">
       <Link to="/">
-        <img src={assets.logo} alt="logo" className=" w-28 sm:w-32 lg:w-40" />
+        <motion.img
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2, delay: 0.4 }}
+          src={assets.logo}
+          alt="logo"
+          className=" w-28 sm:w-32 lg:w-40"
+        />
       </Link>
 
       <div>
