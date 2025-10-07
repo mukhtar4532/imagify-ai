@@ -59,7 +59,7 @@ export const loginUser = async (req, res) => {
 
 export const userCredit = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId = req.userId;
 
     const user = await userModel.findById(userId);
     res.json({

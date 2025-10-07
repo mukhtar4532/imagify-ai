@@ -5,7 +5,7 @@ import { AppContext } from "../context/AppContext.jsx";
 import { motion } from "motion/react";
 
 const Navbar = () => {
-  const { user, setShowLogin } = useContext(AppContext);
+  const { user, setShowLogin, credit } = useContext(AppContext);
   const navigate = useNavigate();
 
   return (
@@ -31,16 +31,16 @@ const Navbar = () => {
                 className=" w-5"
               />
               <p className=" text-xs sm:text-sm font-medium text-gray-600">
-                Credits left: 50
+                Credits left: {credit}
               </p>
             </button>
-            <p className=" text-gray-600 pl-4 max-sm:hidden">Hi, Mukhtar</p>
+            <p className=" text-gray-600 pl-4 max-sm:hidden">Hi, {user.name}</p>
 
             <div className=" relative group">
               <img
                 src={assets.profile_icon}
                 alt="profile_icon"
-                className="w-10 drop-shadow"
+                className="w-6 drop-shadow"
               />
               <div className="absolute  hidden group-hover:block top-0 right-0 z-10 pt-13 rounded text-black">
                 <ul className="list-none m-0 p-2 bg-black text-white rounded-full text-sm">

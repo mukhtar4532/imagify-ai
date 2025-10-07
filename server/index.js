@@ -10,8 +10,8 @@ const app = express();
 await connectTOMongoDB();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/user", userRouter);
 app.use("/api/image", imageRouter);
