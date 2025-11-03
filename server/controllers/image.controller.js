@@ -1,12 +1,12 @@
 import userModel from "../models/user.model.js";
-import axios from "axios";
 
 export const generateImage = async (req, res) => {
   try {
-    const { userId, prompt } = req.body;
+    const { prompt } = req.body;
+    const userId = req.user?._id || req.userId;
 
     if (!userId || !prompt) {
-      return res.json({ success: true, message: "Missing Details" });
+      return res.json({ success: false, message: "Missing Details" });
     }
 
     const user = await userModel.findById(userId);
@@ -14,7 +14,6 @@ export const generateImage = async (req, res) => {
     if (!user) {
       return res.json({ success: false, message: "User not found" });
     }
-    console.log("User: ", user.name, user.email);
 
     if (user.creditBalance <= 0) {
       return res.json({
@@ -24,23 +23,9 @@ export const generateImage = async (req, res) => {
       });
     }
 
-    // const formData = new FormData();
-    // formData.append("prompt", prompt);
-
-    const { data } = await axios.post(
-      process.env.HF_API_URL,
-      { prompt },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.HF_API_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        responseType: "arraybuffer",
-      }
-    );
-
-    const base64Image = Buffer.from(data, "binary").toString("base64");
-    const resultImage = `data:image/png;base64,${base64Image}`;
+    const encodedPrompt = encodeURIComponent(prompt);
+    const randomSeed = Math.random().toString(36).substring(7);
+    const imageUrl = `${process.env.POLLINATION_URL}/${encodedPrompt}?width=512&height=512&seed=${randomSeed}`;
 
     await userModel.findByIdAndUpdate(user._id, {
       creditBalance: user.creditBalance - 1,
@@ -50,11 +35,10 @@ export const generateImage = async (req, res) => {
       success: true,
       message: "Image Generated",
       creditBalance: user.creditBalance - 1,
-      resultImage,
+      imageUrl,
     });
   } catch (error) {
-    console.log(error.message);
-
+    console.log("Pollination AI Error: ", error.message);
     res.json({ success: false, message: error.message });
   }
 };

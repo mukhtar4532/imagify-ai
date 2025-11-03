@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const { setShowLogin, backendUrl, setUser, setToken, loadCreditData } =
+  const { setShowLogin, backendUrl, setUser, setToken } =
     useContext(AppContext);
   const [state, setState] = useState("Login");
 
@@ -52,9 +52,7 @@ const Login = () => {
           toast.error(data.message);
         }
       }
-      loadCreditData();
     } catch (error) {
-      // toast.error(error.message);
       console.error(
         "Login Error:",
         error.response ? error.response.data : error.message
@@ -70,14 +68,12 @@ const Login = () => {
     };
   }, []);
   return (
-    <motion.section
-      initial={{ opacity: 0.2, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 bottom-0 z-10 backdrop-blur-sm bg-black/30 flex justify-center items-center"
-    >
-      <form
+    <section className="fixed top-0 left-0 right-0 bottom-0 z-10 backdrop-blur-sm bg-black/30 flex justify-center items-center">
+      <motion.form
+        initial={{ opacity: 0.2, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
         onSubmit={onSubmitHandler}
         className="relative bg-white text-slate-500 p-10 rounded-xl"
       >
@@ -90,7 +86,6 @@ const Login = () => {
           <div className="border px-6 py-2 flex items-center gap-2 rounded-full mt-5">
             <img
               width={17}
-              // className="text-transparent"
               className="invert-[40%] sepia-[80%] saturate-[200%] hue-rotate-[180deg]"
               src={assets.profile_icon}
               alt=""
@@ -164,8 +159,8 @@ const Login = () => {
           alt="cross_icon"
           className="absolute top-5 right-5 cursor-pointer"
         />
-      </form>
-    </motion.section>
+      </motion.form>
+    </section>
   );
 };
 

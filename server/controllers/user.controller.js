@@ -36,9 +36,6 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email });
 
-    console.log("Given password", password);
-    console.log("User password", user.password);
-
     if (!user) {
       return res.json({ success: false, message: "Invalid Credentials" });
     }

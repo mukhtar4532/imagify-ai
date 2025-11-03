@@ -1,5 +1,7 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
@@ -8,6 +10,8 @@ const AppContextProvider = (props) => {
   const [showLogin, setShowLogin] = useState(false);
   const [credit, setCredit] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("token"));
+
+  const navigate = useNavigate();
 
   const backendUrl =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
@@ -22,6 +26,7 @@ const AppContextProvider = (props) => {
 
       if (data.success) {
         setCredit(data.credits);
+        setUser(data.user);
       } else {
         console.error("Failed to load credits:", data.message);
       }
@@ -29,6 +34,41 @@ const AppContextProvider = (props) => {
       console.error("Error loading credits:", error.message);
     }
   };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken("");
+    setUser(null);
+  };
+
+  const generateImage = async (prompt) => {
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}/api/image/generateimage`,
+        { prompt },
+        { headers: { token } }
+      );
+
+      if (data.success) {
+        loadCreditData();
+        return data.imageUrl;
+      } else {
+        toast.error(data.message);
+        loadCreditData();
+        if (data.creditBalance === 0) {
+          navigate("/buy");
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      loadCreditData();
+    }
+  }, [token]);
 
   const value = {
     user,
@@ -40,7 +80,8 @@ const AppContextProvider = (props) => {
     setCredit,
     token,
     setToken,
-    loadCreditData,
+    logout,
+    generateImage,
   };
 
   return (

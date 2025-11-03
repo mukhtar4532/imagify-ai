@@ -5,7 +5,7 @@ import { AppContext } from "../context/AppContext.jsx";
 import { motion } from "motion/react";
 
 const Navbar = () => {
-  const { user, setShowLogin, credit } = useContext(AppContext);
+  const { user, setShowLogin, credit, logout } = useContext(AppContext);
   const navigate = useNavigate();
 
   return (
@@ -42,7 +42,10 @@ const Navbar = () => {
                 alt="profile_icon"
                 className="w-6 drop-shadow"
               />
-              <div className="absolute  hidden group-hover:block top-0 right-0 z-10 pt-13 rounded text-black">
+              <div
+                onClick={logout}
+                className="absolute  hidden group-hover:block top-0 right-0 z-10 pt-13 rounded text-black"
+              >
                 <ul className="list-none m-0 p-2 bg-black text-white rounded-full text-sm">
                   <li className=" py-1 px-4 cursor-pointer">Logout</li>
                 </ul>

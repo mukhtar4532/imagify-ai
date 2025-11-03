@@ -1,10 +1,10 @@
-import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
 import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
 import { ToastContainer } from "react-toastify";
+import AppRoutes from "./routes/Routes";
 
 const App = () => {
   const { showLogin } = useContext(AppContext);
@@ -13,7 +13,7 @@ const App = () => {
       <ToastContainer position="bottom-right" />
       <Navbar />
       {showLogin && <Login />}
-      <Outlet />
+      <AppRoutes />
       <Footer />
     </div>
   );

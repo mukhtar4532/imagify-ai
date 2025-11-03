@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { assets } from "../assets/assets";
 import { motion } from "motion/react";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 const Result = () => {
   const [image, setImage] = useState(assets.sample_img_1);
@@ -8,7 +10,24 @@ const Result = () => {
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
 
-  const onSubmitHandler = async (e) => {};
+  const { generateImage } = useContext(AppContext);
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (input) {
+      const getImage = await generateImage(input);
+
+      if (getImage) {
+        setIsImageLoaded(true);
+        setImage(getImage);
+      }
+      console.log("Image Url: ", getImage);
+    }
+
+    setLoading(false);
+  };
 
   return (
     <motion.form
@@ -21,7 +40,12 @@ const Result = () => {
     >
       <div>
         <div className="relative">
-          <img src={image} alt="sample_img" className="max-w-sm rounded" />
+          <img
+            src={image}
+            alt="sample_img"
+            crossOrigin="anonymous"
+            className="max-w-sm rounded"
+          />
 
           <span
             className={`absolute bottom-0 left-0 h-1 bg-blue-500 ${
@@ -52,11 +76,15 @@ const Result = () => {
 
       {isImageLoaded && (
         <div className="flex gap-4 flex-wrap justify-center mt-10">
-          <button className="bg-transparent text-black border border-zinc-900 px-8 py-3 rounded-full cursor-pointer">
+          <button
+            onClick={() => setIsImageLoaded(false)}
+            className="bg-transparent text-black border border-zinc-900 px-8 py-3 rounded-full cursor-pointer"
+          >
             Generate Another
           </button>
           <a
             href={image}
+            download
             className="bg-zinc-900 text-white px-8 py-3 rounded-full cursor-pointer"
           >
             Download
