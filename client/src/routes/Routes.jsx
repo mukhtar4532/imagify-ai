@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "../pages/Home.jsx";
 import BuyCredits from "../pages/BuyCredits.jsx";
-import App from "../App.jsx";
 import Result from "../pages/Result.jsx";
+import Cancel from "../pages/Cancel.jsx";
+import Success from "../pages/Success.jsx";
 
 const AppRoutes = () => {
   return (
@@ -11,6 +12,8 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="buy" element={<BuyCredits />} />
         <Route path="result" element={<Result />} />
+        <Route path="cancel" element={<Cancel />} />
+        <Route path="success" element={<Success />} />
       </Routes>
     </div>
   );

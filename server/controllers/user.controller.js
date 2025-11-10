@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
+import transactionModel from "../models/transaction.model.js";
+import Stripe from "stripe";
 
 export const registerUser = async (req, res) => {
   try {
@@ -66,6 +68,80 @@ export const userCredit = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+export const stripePaymentGateway = async (req, res) => {
+  try {
+    const { planId } = req.body;
+    const userId = req.userId;
+
+    const userData = await userModel.findById(userId);
+
+    if (!userId || !planId) {
+      return res.json({ success: false, message: "Missing Details" });
+    }
+
+    let credits, plan, amount;
+
+    switch (planId) {
+      case "Basic":
+        plan = "Basic";
+        credits = 100;
+        amount = 10;
+        break;
+
+      case "Advanced":
+        plan = "Advanced";
+        credits = 500;
+        amount = 50;
+        break;
+
+      case "Business":
+        plan = "Business";
+        credits = 5000;
+        amount = 250;
+        break;
+
+      default:
+        return res.json({ success: false, message: "Plan not found" });
+    }
+
+    const transactionData = { userId, plan, amount, credits };
+    console.log(transactionData);
+
+    await transactionModel.create(transactionData);
+
+    const payementIntent = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: process.env.CURRENCY,
+            product_data: {
+              name: plan,
+            },
+            unit_amount: amount * 100,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: `${process.env.FRONTEND_URL}/success`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+    });
+
+    const updatedCreditBalance = userData.creditBalance + credits;
+    await userModel.findByIdAndUpdate(userData._id, {
+      creditBalance: updatedCreditBalance,
+    });
+
+    res.json({ url: payementIntent.url });
+  } catch (error) {
+    console.log("Error occur from payment gateway: ", error);
     res.json({ success: false, message: error.message });
   }
 };
